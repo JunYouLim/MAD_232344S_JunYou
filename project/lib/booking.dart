@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class BookingListPage extends StatelessWidget {
-  final List<Map<String, String>> bookings;  // The list of saved bookings
+  final List<Map<String, String>> bookings; 
 
   BookingListPage({required this.bookings});
 
@@ -20,7 +20,6 @@ class BookingListPage extends StatelessWidget {
             subtitle: Text('Date: ${booking['date']} at ${booking['time']}'),
             leading: Icon(Icons.book_online),
             onTap: () {
-              // You can add any action when a booking is tapped, like showing details.
             },
           );
         },

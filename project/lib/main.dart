@@ -40,7 +40,7 @@ class _MainTabControllerState extends State<MainTabController> {
     super.initState();
     _pages = [
       HomePage(userName: widget.userName, userEmail: widget.userEmail),
-      Profile(userName: widget.userName, userEmail: widget.userEmail),  // Modified to use updated Profile page
+      Profile(userName: widget.userName, userEmail: widget.userEmail),  
       About(),
     ];
   }
@@ -247,24 +247,22 @@ class _HomePageState extends State<HomePage> {
     'distance': 'Approx. 5 minutes walk from Chinatown MRT',
     'description': 'Chinatown Point Medical Centre provides general medical services, including health screenings, vaccinations, and chronic disease management. The clinic is easily accessible in the Chinatown area and caters to individuals looking for quality healthcare services in a convenient and central location.'
   },
-    // Add all other clinics here...
+
   ];
 
  @override
   void initState() {
     super.initState();
-    filteredClinics = List.from(clinics); // Initialize with all clinics
+    filteredClinics = List.from(clinics); 
   }
 
   void filterClinics(String searchText, String? specialization) {
     setState(() {
       filteredClinics = clinics.where((clinic) {
-        // Filter by search text
         bool matchesSearch = clinic['name']!.toLowerCase().contains(searchText.toLowerCase()) ||
             clinic['location']!.toLowerCase().contains(searchText.toLowerCase()) ||
             clinic['specialization']!.toLowerCase().contains(searchText.toLowerCase());
 
-        // Filter by specialization if selected
         bool matchesSpecialization = specialization == null || specialization.isEmpty || 
             clinic['specialization']!.toLowerCase().contains(specialization.toLowerCase());
 
@@ -275,7 +273,6 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    // Extract a unique list of specializations
     Set<String> allSpecializations = {};
     for (var clinic in clinics) {
       allSpecializations.addAll(clinic['specialization']!.split(',').map((e) => e.trim()));
@@ -291,7 +288,6 @@ class _HomePageState extends State<HomePage> {
         padding: const EdgeInsets.all(8.0),
         child: Column(
           children: [
-            // Search bar
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 8.0),
               child: TextField(
@@ -310,7 +306,6 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
             ),
-            // Specialization Filter Dropdown
             DropdownButton<String>(
               value: selectedSpecialization,
               hint: Text("Select Specialization"),
@@ -329,7 +324,6 @@ class _HomePageState extends State<HomePage> {
               },
             ),
             SizedBox(height: 16),
-            // Clinic List with Cards
             Expanded(
               child: ListView.builder(
                 itemCount: filteredClinics.length,
@@ -368,7 +362,6 @@ class _HomePageState extends State<HomePage> {
                         ],
                       ),
                       onTap: () {
-                        // Navigate to ClinicDetailPage
                         Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -406,7 +399,6 @@ class ClinicDetailPage extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Clinic Name
               Text(
                 clinic['name']!,
                 style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold, color: Colors.black),
@@ -418,7 +410,6 @@ class ClinicDetailPage extends StatelessWidget {
               ),
               SizedBox(height: 20),
               
-              // Specialization and Hotline Section
               _buildInfoCard(
                 context,
                 title: 'Specialization',
@@ -459,7 +450,6 @@ class ClinicDetailPage extends StatelessWidget {
               // Book Appointment Button
               ElevatedButton(
                 onPressed: () {
-                  // Navigate to the Booking Page
                   Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -484,7 +474,6 @@ class ClinicDetailPage extends StatelessWidget {
     );
   }
 
-  // Helper method to build info cards for sections like Specialization, Hotline, Distance
   Widget _buildInfoCard(BuildContext context, {required String title, required String value, required IconData icon, required Color iconColor}) {
     return Card(
       elevation: 5,
@@ -514,7 +503,6 @@ class _BookingPageState extends State<BookingPage> {
   DateTime? _selectedDate;
   TimeOfDay? _selectedTime;
 
-  // List to save the booking details
   List<Map<String, String>> _bookedAppointments = [];
 
   Future<void> _selectDate() async {
@@ -615,14 +603,12 @@ class _BookingPageState extends State<BookingPage> {
               onPressed: (_selectedDate == null || _selectedTime == null)
                   ? null
                   : () {
-                      // Save the appointment details in the list
                       _bookedAppointments.add({
                         'clinicName': widget.clinicName,
                         'date': _selectedDate!.toLocal().toString().split(' ')[0],
                         'time': _selectedTime!.format(context),
                       });
 
-                      // Navigate to the BookingDetailsPage with the saved appointments
                       Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -738,7 +724,6 @@ class _LoginPageState extends State<LoginPage> {
                 key: _formKey,
                 child: Column(
                   children: [
-                    // Name Field (Always Visible)
                     _buildTextField(_nameController, 'Name', Icons.person, false, (value) {
                       if (!_isLogin && (value == null || value.isEmpty)) {
                         return 'Please enter your name';
@@ -747,7 +732,6 @@ class _LoginPageState extends State<LoginPage> {
                     }),
                     SizedBox(height: 16),
 
-                    // Email Field
                     _buildTextField(_emailController, 'Email', Icons.email, false, (value) {
                       if (value == null || value.isEmpty) {
                         return 'Please enter your email';
@@ -759,7 +743,6 @@ class _LoginPageState extends State<LoginPage> {
                     }),
                     SizedBox(height: 16),
 
-                    // Password Field
                     _buildTextField(_passwordController, 'Password', Icons.lock, true, (value) {
                       if (value == null || value.isEmpty) {
                         return 'Please enter your password';
@@ -771,7 +754,6 @@ class _LoginPageState extends State<LoginPage> {
                     }),
                     SizedBox(height: 16),
 
-                    // Confirm Password (Only for Register)
                     if (!_isLogin)
                       Column(
                         children: [
@@ -788,7 +770,6 @@ class _LoginPageState extends State<LoginPage> {
                         ],
                       ),
 
-                    // Login/Register Button
                     ElevatedButton(
                       onPressed: _submitForm,
                       style: ElevatedButton.styleFrom(
@@ -800,7 +781,6 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     SizedBox(height: 10),
 
-                    // Toggle Between Login & Register
                     TextButton(
                       onPressed: _toggleAuthMode,
                       child: AnimatedSwitcher(
